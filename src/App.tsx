@@ -3,6 +3,7 @@ import { useState } from 'react';
 export default function Game() {
     const [nextMove, setNextMove] = useState<string>('X');
     const [boardState, setBoardState] = useState<(string | null)[]>(Array(9).fill(null));
+    const [moveCount, setMoveCount] = useState<number>(0);
 
     function onCellClick(cellIndex: number) {
         if (gameWon(boardState) || boardState[cellIndex]) return;
@@ -10,6 +11,7 @@ export default function Game() {
         const newBoardState = boardState.slice();
         newBoardState[cellIndex] = nextMove;
         setBoardState(newBoardState);
+        setMoveCount(moveCount + 1);
 
         const newNextMove = (nextMove === "X") ? "O" : "X";
         setNextMove(newNextMove);
@@ -18,17 +20,28 @@ export default function Game() {
     function restartGame() {
         setBoardState(Array(9).fill(null));
         setNextMove("X");
+        setMoveCount(0);
     }
 
     if (gameWon(boardState)) return <>
         <div className="container">
-            <div className="win-message-container">
+            <div className="message-container">
                 <h2 className="win-message">Game Won</h2>
             </div>
             <Board state={boardState} clickHandler={onCellClick} />
             <button className="play-again-button" onClick={restartGame}>Play Again</button>
         </div>
     </>;
+
+    if (moveCount === 9) return <>
+        <div className="container">
+            <div className="message-container">
+                <h2 className="draw-message">Draw</h2>
+            </div>
+            <Board state={boardState} clickHandler={onCellClick} />
+            <button className="play-again-button" onClick={restartGame}>Play Again</button>
+        </div>
+    </>
 
     return <Board state={boardState} clickHandler={onCellClick} />;
 }
