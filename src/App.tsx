@@ -50,7 +50,11 @@ function Board({state, clickHandler}) {
 }
 
 function Cell({value, onCellClick}) {
-    return <button className="cell" onClick={onCellClick}>{value}</button>;
+    if (value === "X") {
+        return <button className="cell x" onClick={onCellClick}>{value}</button>;
+    } else {
+        return <button className="cell o" onClick={onCellClick}>{value}</button>;
+    }
 }
 
 function gameWon(boardState) {
