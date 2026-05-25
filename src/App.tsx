@@ -1,10 +1,10 @@
-import {useState} from 'react';
+import { useState } from 'react';
 
 export default function Game() {
-    const [nextMove, setNextMove] = useState('X');
-    const [boardState, setBoardState] = useState(Array(9).fill(null));
+    const [nextMove, setNextMove] = useState<string>('X');
+    const [boardState, setBoardState] = useState<(string | null)[]>(Array(9).fill(null));
 
-    function onCellClick(cellIndex) {
+    function onCellClick(cellIndex: number) {
         if (gameWon(boardState) || boardState[cellIndex]) return;
 
         const newBoardState = boardState.slice();
@@ -33,7 +33,12 @@ export default function Game() {
     return <Board state={boardState} clickHandler={onCellClick} />;
 }
 
-function Board({state, clickHandler}) {
+interface BoardProps {
+    state: (string | null)[];
+    clickHandler: (cellIndex: number) => void;
+}
+
+function Board({ state, clickHandler }: BoardProps) {
     return (
         <div className="board">
             <Cell value={state[0]} onCellClick={() => clickHandler(0)} />
@@ -49,7 +54,12 @@ function Board({state, clickHandler}) {
     );
 }
 
-function Cell({value, onCellClick}) {
+interface CellProps {
+    value: string | null;
+    onCellClick: () => void;
+}
+
+function Cell({ value, onCellClick }: CellProps) {
     if (value === "X") {
         return <button className="cell x" onClick={onCellClick}>{value}</button>;
     } else {
@@ -57,7 +67,7 @@ function Cell({value, onCellClick}) {
     }
 }
 
-function gameWon(boardState) {
+function gameWon(boardState: (string | null)[]): boolean {
     const winningCombinations = [
         [0, 1, 2],
         [3, 4, 5],
