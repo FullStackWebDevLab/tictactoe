@@ -1,3 +1,8 @@
+/*
+ * Bugs
+ * ====
+ * + Overwriting cells. When you click on a cell, the current move is written on the cell. When you click the cell again, the next move ovewrites the previous move.
+ */
 import {useState} from 'react';
 
 export default function App() {
@@ -12,12 +17,18 @@ function Board() {
     });
 
     function handleClick(cellIndex) {
+        if (gameWon(boardState) || boardState[cellIndex]) return;
+
         const newBoardState = {
             ...boardState,
             [cellIndex]: nextMove
         };
-
         setBoardState(newBoardState);
+
+        if (gameWon(newBoardState)) {
+            console.log("Game won.");
+            return;
+        }
 
         const newNextMove = (nextMove === "X") ? "O" : "X";
         setNextMove(newNextMove);
@@ -40,4 +51,25 @@ function Board() {
 
 function Cell({value, clickHandler}) {
     return <button className="cell" onClick={clickHandler}>{value}</button>;
+}
+
+function gameWon(boardState) {
+    const winningCombinations = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
+
+    for (const combination of winningCombinations) {
+        if (boardState[combination[0]] &&
+            boardState[combination[0]] === boardState[combination[1]] &&
+            boardState[combination[1]] === boardState[combination[2]]) return true;
+    }
+
+    return false;
 }
