@@ -1,46 +1,56 @@
 import {useState} from 'react';
 
 export default function Game() {
-    return <Board/>;
-}
-
-function Board() {
     const [nextMove, setNextMove] = useState('X');
     const [boardState, setBoardState] = useState(Array(9).fill(null));
 
-    function handleClick(cellIndex) {
+    function onCellClick(cellIndex) {
         if (gameWon(boardState) || boardState[cellIndex]) return;
 
         const newBoardState = boardState.slice();
         newBoardState[cellIndex] = nextMove;
         setBoardState(newBoardState);
 
-        if (gameWon(newBoardState)) {
-            console.log("Game won.");
-            return;
-        }
-
         const newNextMove = (nextMove === "X") ? "O" : "X";
         setNextMove(newNextMove);
     }
 
+    function restartGame() {
+        setBoardState(Array(9).fill(null));
+        setNextMove("X");
+    }
+
+    if (gameWon(boardState)) return <>
+        <div className="container">
+            <div className="win-message-container">
+                <h2 className="win-message">Game Won</h2>
+            </div>
+            <Board state={boardState} clickHandler={onCellClick} />
+            <button className="play-again-button" onClick={restartGame}>Play Again</button>
+        </div>
+    </>;
+
+    return <Board state={boardState} clickHandler={onCellClick} />;
+}
+
+function Board({state, clickHandler}) {
     return (
         <div className="board">
-            <Cell value={boardState[0]} clickHandler = {() => handleClick(0)} />
-            <Cell value={boardState[1]} clickHandler = {() => handleClick(1)} />
-            <Cell value={boardState[2]} clickHandler = {() => handleClick(2)} />
-            <Cell value={boardState[3]} clickHandler = {() => handleClick(3)} />
-            <Cell value={boardState[4]} clickHandler = {() => handleClick(4)} />
-            <Cell value={boardState[5]} clickHandler = {() => handleClick(5)} />
-            <Cell value={boardState[6]} clickHandler = {() => handleClick(6)} />
-            <Cell value={boardState[7]} clickHandler = {() => handleClick(7)} />
-            <Cell value={boardState[8]} clickHandler = {() => handleClick(8)} />
+            <Cell value={state[0]} onCellClick={() => clickHandler(0)} />
+            <Cell value={state[1]} onCellClick={() => clickHandler(1)} />
+            <Cell value={state[2]} onCellClick={() => clickHandler(2)} />
+            <Cell value={state[3]} onCellClick={() => clickHandler(3)} />
+            <Cell value={state[4]} onCellClick={() => clickHandler(4)} />
+            <Cell value={state[5]} onCellClick={() => clickHandler(5)} />
+            <Cell value={state[6]} onCellClick={() => clickHandler(6)} />
+            <Cell value={state[7]} onCellClick={() => clickHandler(7)} />
+            <Cell value={state[8]} onCellClick={() => clickHandler(8)} />
         </div>
     );
 }
 
-function Cell({value, clickHandler}) {
-    return <button className="cell" onClick={clickHandler}>{value}</button>;
+function Cell({value, onCellClick}) {
+    return <button className="cell" onClick={onCellClick}>{value}</button>;
 }
 
 function gameWon(boardState) {
