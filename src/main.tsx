@@ -7,5 +7,6 @@ import { Analytics } from "@vercel/analytics/next" // for vercel analytics
 createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
     <App />
+    <Analytics />
   </StrictMode>
 )
