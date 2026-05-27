@@ -1,11 +1,6 @@
-import type * as Types from "./types";
+import type * as Types from "../types";
 
-interface CellProps {
-    value: Types.CellValue;
-    onClick: () => void;
-}
-
-export default function Cell({ value, onClick }: CellProps) {
+export default function Cell({ value, onClick }: Types.CellProps) {
     if (value === "X") {
         return <button className="cell x" onClick={onClick}>{value}</button>;
     } else {
