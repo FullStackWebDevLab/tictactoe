@@ -22,6 +22,10 @@ class API {
         return this.gameState.getState();
     }
 
+    resetState() {
+        this.gameState = new GameState();
+    }
+
     play(player: Types.Player, index: number) {
         const state: Types.IGameState = this.gameState.getState();
         state.board[index] = player;
@@ -44,14 +48,24 @@ class API {
         for (const pattern of winningPatterns) {
             const [a, b, c] = pattern;
             if (board[a] && board[a] === board[b] && board[b] === board[c]) {
-                this.gameState.updateState({ winner: board[a] });
+                this.gameState.updateState({ won: true, winner: board[a] });
             }
         }
     }
 
-    playAndCheckWin(player: Types.Player, index: number) {
+    checkDraw() {
+        const board = this.gameState.getState().board;
+        for (const cell of board) {
+            if (!cell) return;
+        }
+
+        this.gameState.updateState({ draw: true });
+    }
+
+    playAndCheckWinAndDraw(player: Types.Player, index: number) {
         this.play(player, index);
         this.checkWin();
+        this.checkDraw();
     }
 }
 
