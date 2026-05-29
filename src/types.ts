@@ -2,7 +2,7 @@ export type Player = "X" | "O";
 export type CellValue = Player | null;
 export type Board = Array<CellValue>;
 
-interface BoardProps {
+export interface BoardProps {
     state: Board;
     onCellClick(index: number): void;
 }
@@ -12,5 +12,7 @@ export interface CellProps {
 }
 export interface IGameState {
     board: Board;
+    won: boolean;
     winner: Player | null;
+    draw: boolean;
 }
