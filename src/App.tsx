@@ -4,11 +4,12 @@ import { useState, useReducer } from "react";
 import API from "./API";
 
 const opponent = new AIOpponent();
-opponent.play();
+// opponent.playRandom();
 
 export default function App() {
     // This is to force update this component when needed.
     const [, forceUpdate] = useReducer((x) => x + 1, 0);
+    const [humanStart, setHumanStart] = useState(1);
 
     function clickHandler(index: number) {
         const gameState = API.getState();
@@ -20,14 +21,18 @@ export default function App() {
             return;
         }
 
-        opponent.playRandom();
+        opponent.play();
         forceUpdate();
     }
 
     function restartGame() {
         API.resetState();
-        opponent.play();
-        forceUpdate();
+
+        if (humanStart % 2) {
+            opponent.playRandom();
+        }
+        
+        setHumanStart(humanStart+1);
     }
 
     const gameState = API.getState();
