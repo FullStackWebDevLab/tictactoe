@@ -17,10 +17,10 @@ export default class AIOpponent {
     playMinimax() {
         const board: Types.Board = API.getState().board;
         const bestMove: number | null = this.getBestMove(board);
-        API.playAndCheckWinAndDraw("X", bestMove);
+        if (typeof bestMove === "number") API.playAndCheckWinAndDraw("X", bestMove);
     }
 
-    getBestMove(board: Types.Board): number {
+    getBestMove(board: Types.Board): number | null {
         const availableMoves = this.getAvailableMoves(board);
 
         let bestScore = -Infinity;

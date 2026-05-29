@@ -8,7 +8,7 @@ export interface BoardProps {
 }
 export interface CellProps {
     value: CellValue;
-    onClick(index: number): void;
+    onClick(): void;
 }
 export interface IGameState {
     board: Board;

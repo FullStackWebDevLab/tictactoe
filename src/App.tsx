@@ -42,7 +42,7 @@ export default function App() {
             <div className="message-container">
                 <h2 className="win-message">{gameState.winner} Won</h2>
             </div>
-            <Board state={gameState.board} clickHandler={clickHandler} />
+            <Board state={gameState.board} onCellClick={clickHandler} />
             <button className="play-again-button" onClick={restartGame}>Play Again</button>
         </div>
     </>;
@@ -52,7 +52,7 @@ export default function App() {
             <div className="message-container">
                 <h2 className="draw-message">Draw</h2>
             </div>
-            <Board state={gameState.board} clickHandler={clickHandler} />
+            <Board state={gameState.board} onCellClick={clickHandler} />
             <button className="play-again-button" onClick={restartGame}>Play Again</button>
         </div>
     </>;
