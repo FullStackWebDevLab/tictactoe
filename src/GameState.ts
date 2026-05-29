@@ -7,9 +7,9 @@ export default class GameState {
     constructor() {
         this.state = {
             board: Array(9).fill(null),
-            won: false;
-            winner: null
-            draw: false;
+            won: false,
+            winner: null,
+            draw: false
         }
     }
 
