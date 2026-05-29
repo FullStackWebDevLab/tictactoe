@@ -36,6 +36,7 @@ body {
     display: grid;
     grid-template-rows: 60px auto 60px;
     gap: 30px;
+    width: 100vw;
 }
 
 .board {
@@ -66,10 +67,12 @@ body {
     color: var(--danger);
 }
 
+/*
 .cell:hover {
     border-color: var(--accent-hover);
     box-shadow: 0 0 4px var(--accent-hover);
 }
+*/
 
 .message-container {
     display: flex;
