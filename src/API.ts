@@ -28,7 +28,7 @@ class API {
         this.gameState.updateState(state);
     }
 
-    checkWin(): boolean {
+    checkWin() {
         const board = this.gameState.getState().board;
         const winningPatterns = [
             [0, 1, 2],
@@ -45,11 +45,13 @@ class API {
             const [a, b, c] = pattern;
             if (board[a] && board[a] === board[b] && board[b] === board[c]) {
                 this.gameState.updateState({ winner: board[a] });
-                return true;
             }
         }
+    }
 
-        return false;
+    playAndCheckWin(player: Types.Player, index: number) {
+        this.play(player, index);
+        this.checkWin();
     }
 }
 
