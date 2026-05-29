@@ -4,6 +4,7 @@ import { useState, useReducer } from "react";
 import API from "./API";
 
 const opponent = new AIOpponent();
+opponent.playRandom();
 
 export default function App() {
     // This is to force update this component when needed.
@@ -25,6 +26,7 @@ export default function App() {
 
     function restartGame() {
         API.resetState();
+        opponent.playRandom();
         forceUpdate();
     }
 
