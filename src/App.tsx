@@ -1,19 +1,54 @@
 import Board from "./components/Board";
-import { useState } from "react";
 import AIOpponent from "./AIOpponent";
+import { useState, useReducer } from "react";
 import API from "./API";
 
+const opponent = new AIOpponent();
+
 export default function App() {
-    const [opponent] = useState(new AIOpponent());
-    const [gameState, setGameState] = useState(API.getState());
+    // This is to force update this component when needed.
+    const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
     function clickHandler(index: number) {
-        if (gameState.board[index]) return;
+        const gameState = API.getState();
+        if (gameState.won || gameState.board[index]) return;
 
-        API.play("O", index);
+        API.playAndCheckWinAndDraw("O", index);
+        if (API.getState().won) {
+            forceUpdate();
+            return;
+        }
+
         opponent.playRandom();
-        setGameState(API.getState());
+        forceUpdate();
     }
+
+    function restartGame() {
+        API.resetState();
+        forceUpdate();
+    }
+
+    const gameState = API.getState();
+    
+    if (gameState.won) return <>
+        <div className="container">
+            <div className="message-container">
+                <h2 className="win-message">{gameState.winner} Won</h2>
+            </div>
+            <Board state={gameState.board} clickHandler={clickHandler} />
+            <button className="play-again-button" onClick={restartGame}>Play Again</button>
+        </div>
+    </>;
+
+    if (gameState.draw) return <>
+        <div className="container">
+            <div className="message-container">
+                <h2 className="draw-message">Draw</h2>
+            </div>
+            <Board state={gameState.board} clickHandler={clickHandler} />
+            <button className="play-again-button" onClick={restartGame}>Play Again</button>
+        </div>
+    </>;
 
     return <Board state={gameState.board} onCellClick={clickHandler} />
 }
