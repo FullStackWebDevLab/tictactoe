@@ -1,10 +1,11 @@
+import Header from "./components/Header";
 import Board from "./components/Board";
 import AIOpponent from "./AIOpponent";
 import { useState, useReducer } from "react";
 import API from "./API";
 
+const GITHUB_REPO = "https://github.com/FullStackWebDevLab/tictactoe";
 const opponent = new AIOpponent();
-// opponent.playRandom();
 
 export default function App() {
     // This is to force update this component when needed.
@@ -38,6 +39,7 @@ export default function App() {
     const gameState = API.getState();
     
     if (gameState.won) return <>
+        <Header githubRepoUrl={GITHUB_REPO} />
         <div className="container">
             <div className="message-container">
                 <h2 className="win-message">{gameState.winner} Won</h2>
@@ -48,6 +50,7 @@ export default function App() {
     </>;
 
     if (gameState.draw) return <>
+        <Header githubRepoUrl={GITHUB_REPO} />
         <div className="container">
             <div className="message-container">
                 <h2 className="draw-message">Draw</h2>
@@ -57,5 +60,8 @@ export default function App() {
         </div>
     </>;
 
-    return <Board state={gameState.board} onCellClick={clickHandler} />
+    return <>
+        <Header githubRepoUrl={GITHUB_REPO} />
+        <Board state={gameState.board} onCellClick={clickHandler} />
+    </>
 }
